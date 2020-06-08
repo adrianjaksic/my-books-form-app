@@ -12,7 +12,7 @@ namespace Controllers.Books
         private readonly IBookView _view;
         private readonly IBookRepository _bookRepository;
         private readonly IBindingRepository _bindingRepository;
-        private IEnumerable<Book> _books;
+        private IEnumerable<Book> _books = new List<Book>();
 
         public BookController(IBookView view, IBookRepository bookRepository, IBindingRepository bindingRepository)
         {
@@ -39,13 +39,10 @@ namespace Controllers.Books
 
         public void DeleteBooksNotInStock()
         {
-            if (_books == null)
-            {
-                throw new ApplicationException("Books are not loaded");
-            }
-
             _books = _books.Where(b => b.InStock).ToList();
             _view.SetBooks(_books);
         }
+
+        public int BooksCount => _books.Count();
     }
 }
